@@ -26,11 +26,16 @@ export default function ImageTextSearch() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 p-4 md:p-8">
+      <h1 className="text-4xl font-bold text-center mb-8 text-indigo-700 animate-pulse">
+        Image Text Search
+      </h1>
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-8">
-        <ImageUploader
-          uploadedImages={uploadedImages}
-          setUploadedImages={setUploadedImages}
-        />
+        <div className="h-[180px] md:h-auto overflow-auto">
+          <ImageUploader
+            uploadedImages={uploadedImages}
+            setUploadedImages={setUploadedImages}
+          />
+        </div>
         <ImageSearch
           uploadedImages={uploadedImages}
           onSelectImage={(index) => {
