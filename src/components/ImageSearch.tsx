@@ -12,17 +12,7 @@ import {
 } from "@/components/ui/tooltip";
 import { UploadedImage } from "@/types/image";
 import { ImagePreviewDialog } from "@/components/ImagePreviewDialog";
-
-const searchImages = async (
-  query: string,
-  images: UploadedImage[]
-): Promise<UploadedImage[]> => {
-  // Simulate search delay
-  await new Promise((resolve) => setTimeout(resolve, 300));
-  return images.filter((img) =>
-    img.name.toLowerCase().includes(query.toLowerCase())
-  );
-};
+import { searchImages } from "@/helperFunctions/SearchImage";
 
 interface ImageSearchProps {
   uploadedImages: UploadedImage[];
