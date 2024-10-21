@@ -33,12 +33,15 @@ export const processImages = async (
         data: { text },
       } = await worker.recognize(url);
 
+      //format the text to remove new lines spaces and case sensitivity
+      const formattedText = text.replace(/\n/g, " ").toLowerCase();
+
       // Create processed image object
       const processedImage: UploadedImage = {
-        id: Math.random().toString(36).substr(2, 9),
+        id: Math.random().toString(36).slice(2, 11),
         name: file.name,
         url: url,
-        text: text,
+        text: formattedText,
       };
 
       processedImages.push(processedImage);
