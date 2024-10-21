@@ -111,7 +111,7 @@ export function ImageSearch({
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <img
-                        src={image.url}
+                        src={image.file}
                         alt={image.name}
                         className="w-full h-48 object-cover rounded-lg cursor-pointer"
                         onClick={() => handleImageClick(index)}

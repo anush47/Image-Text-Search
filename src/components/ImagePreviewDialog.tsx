@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { ZoomIn, ZoomOut, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { UploadedImage } from "@/types/image";
 
 interface ImagePreviewDialogProps {
@@ -71,10 +71,11 @@ export function ImagePreviewDialog({
   return (
     <Dialog open={selectedImageIndex !== null} onOpenChange={onClose}>
       <DialogContent className="max-w-[95vw] max-h-[95vh] h-screen p-0 m-0">
+        <DialogTitle></DialogTitle>
         <div className="relative w-full h-full flex items-center justify-center">
           <img
             ref={imageRef}
-            src={currentImage.url}
+            src={currentImage.file}
             alt={currentImage.name}
             className="max-w-[90vw] max-h-[90vh] w-auto h-auto object-contain transition-transform duration-200 ease-in-out"
             style={{ transform: `scale(${zoomLevel})` }}

@@ -40,8 +40,12 @@ export const processImages = async (
       const processedImage: UploadedImage = {
         id: Math.random().toString(36).slice(2, 11),
         name: file.name,
-        url: url,
         text: formattedText,
+        file: await new Promise<string>((resolve) => {
+          const reader = new FileReader();
+          reader.onloadend = () => resolve(reader.result as string);
+          reader.readAsDataURL(file);
+        }),
       };
 
       processedImages.push(processedImage);
