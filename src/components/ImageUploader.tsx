@@ -20,61 +20,28 @@ export function ImageUploader({
 }: ImageUploaderProps) {
   const [processing, setProcessing] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [progressStage, setProgressStage] = useState("");
   const { toast } = useToast();
 
   const onDrop = useCallback(
     async (acceptedFiles: File[]) => {
       setProcessing(true);
       setProgress(0);
+      setProgressStage("");
       try {
-        const totalFiles = acceptedFiles.length;
-        const processedImages: UploadedImage[] = [];
-        let duplicateCount = 0;
-
-        for (let i = 0; i < totalFiles; i++) {
-          const file = acceptedFiles[i];
-          const isDuplicate = uploadedImages.some(
-            (img) => img.name === file.name
-          );
-
-          if (isDuplicate) {
-            duplicateCount++;
-            toast({
-              title: "Duplicate file",
-              description: `${file.name} is already uploaded.`,
-              variant: "destructive",
-            });
-          } else {
-            const [processedImage] = await processImages([file]);
-            processedImages.push(processedImage);
-            setUploadedImages((prev) => [...prev, processedImage]);
-            toast({
-              title: "File uploaded",
-              description: `${file.name} has been successfully uploaded.`,
-            });
+        const processedImages = await processImages(
+          acceptedFiles,
+          (progress, stage) => {
+            setProgress(progress);
+            setProgressStage(stage);
           }
-          setProgress(((i + 1) / totalFiles) * 100);
-        }
+        );
 
-        const newFilesCount = processedImages.length;
-        if (newFilesCount > 0) {
-          toast({
-            title: "Upload complete",
-            description: `${newFilesCount} new file${
-              newFilesCount > 1 ? "s" : ""
-            } uploaded successfully.`,
-            variant: "default",
-          });
-        }
-        if (duplicateCount > 0) {
-          toast({
-            title: "Duplicate files skipped",
-            description: `${duplicateCount} duplicate file${
-              duplicateCount > 1 ? "s were" : " was"
-            } skipped.`,
-            variant: "destructive",
-          });
-        }
+        setUploadedImages((prev) => [...prev, ...processedImages]);
+        toast({
+          title: "Upload complete",
+          description: `${processedImages.length} new file(s) uploaded and processed successfully.`,
+        });
       } catch (error) {
         console.error("Error processing images:", error);
         toast({
@@ -85,9 +52,10 @@ export function ImageUploader({
       } finally {
         setProcessing(false);
         setProgress(100);
+        setProgressStage("Complete");
       }
     },
-    [setUploadedImages, toast, uploadedImages]
+    [setUploadedImages]
   );
 
   const deleteImage = (id: string) => {
@@ -115,7 +83,12 @@ export function ImageUploader({
             Drag & drop images here, or click to select files
           </p>
         </div>
-        {processing && <Progress value={progress} className="mt-4" />}
+        {processing && (
+          <div className="mt-4">
+            <Progress value={progress} className="w-full" />
+            <p className="text-sm text-gray-500 mt-2">{progressStage}</p>
+          </div>
+        )}
         <ScrollArea className="h-[300px] mt-4">
           {uploadedImages.map((image) => (
             <div
