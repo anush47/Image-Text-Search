@@ -1,13 +1,3 @@
----
-
-# Image Text Search
-
-**Image Text Search** is a powerful web application designed to help you upload images, extract text from them using OCR (Optical Character Recognition), and search through the extracted text efficiently. This tool is ideal for quickly locating information within a large collection of images, but please note that since image processing is done entirely on the frontend, performance may slow down on low-end devices.
-
-## 🎉 [Live Demo](https://anush47.github.io/Image-Text-Search/)
-
----
-
 ## 🚀 Features
 
 - **Image Upload & Processing**: Easily upload images for text extraction.
