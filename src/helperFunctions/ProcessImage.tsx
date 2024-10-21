@@ -33,7 +33,7 @@ export const processImages = async (
         data: { text },
       } = await worker.recognize(url);
 
-      //format the text to remove new lines spaces and case sensitivity
+      //format the text to remove new lines spaces and case sensitivity remove empty strings make it one line with
       const formattedText = text.replace(/\n/g, " ").toLowerCase();
 
       // Create processed image object

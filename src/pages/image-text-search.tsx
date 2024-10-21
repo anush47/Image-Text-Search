@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { ImageUploader } from "@/components/ImageUploader";
 import { ImageSearch } from "@/components/ImageSearch";
 import { ImagePreviewDialog } from "@/components/ImagePreviewDialog";
@@ -23,10 +23,6 @@ export default function ImageTextSearch() {
     null
   );
   const [searchResults, setSearchResults] = useState<UploadedImage[]>([]);
-
-  useEffect(() => {
-    localStorage.setItem("uploadedImages", JSON.stringify(uploadedImages));
-  }, [uploadedImages]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 p-4 md:p-8">

@@ -1,7 +1,11 @@
 import { useEffect, useState, useRef } from "react";
-import { ZoomIn, ZoomOut, ChevronLeft, ChevronRight } from "lucide-react";
+import { ZoomIn, ZoomOut, ChevronLeft, ChevronRight, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+} from "@/components/ui/dialog";
 import { UploadedImage } from "@/types/image";
 
 interface ImagePreviewDialogProps {
@@ -71,43 +75,54 @@ export function ImagePreviewDialog({
   return (
     <Dialog open={selectedImageIndex !== null} onOpenChange={onClose}>
       <DialogContent className="max-w-[95vw] max-h-[95vh] h-screen p-0 m-0">
-        <DialogTitle></DialogTitle>
-        <div className="relative w-full h-full flex items-center justify-center">
-          <img
-            ref={imageRef}
-            src={currentImage.file}
-            alt={currentImage.name}
-            className="max-w-[90vw] max-h-[90vh] w-auto h-auto object-contain transition-transform duration-200 ease-in-out"
-            style={{ transform: `scale(${zoomLevel})` }}
-          />
-          <div className="absolute bottom-4 right-4 flex space-x-2">
-            <Button size="sm" onClick={() => handleZoom("out")}>
-              <ZoomOut className="h-4 w-4" />
+        <DialogDescription>
+          <div className="relative w-full h-full flex items-center justify-center">
+            {/* Close button */}
+            <Button
+              size="icon"
+              variant="secondary"
+              className="absolute top-4 right-4 z-10 bg-white/80 hover:bg-white/90 transition-colors"
+              onClick={onClose}
+            >
+              <X className="h-6 w-6" />
             </Button>
-            <Button size="sm" onClick={() => handleZoom("in")}>
-              <ZoomIn className="h-4 w-4" />
+
+            <img
+              ref={imageRef}
+              src={currentImage.file}
+              alt={currentImage.name}
+              className="max-w-[90vw] max-h-[90vh] w-auto h-auto object-contain transition-transform duration-200 ease-in-out"
+              style={{ transform: `scale(${zoomLevel})` }}
+            />
+            <div className="absolute bottom-4 right-4 flex space-x-2">
+              <Button size="sm" onClick={() => handleZoom("out")}>
+                <ZoomOut className="h-4 w-4" />
+              </Button>
+              <Button size="sm" onClick={() => handleZoom("in")}>
+                <ZoomIn className="h-4 w-4" />
+              </Button>
+            </div>
+            <Button
+              size="icon"
+              variant="ghost"
+              className="absolute top-1/2 left-4 transform -translate-y-1/2 text-white"
+              onClick={() => navigateImage("prev")}
+            >
+              <ChevronLeft className="h-8 w-8" />
             </Button>
+            <Button
+              size="icon"
+              variant="ghost"
+              className="absolute top-1/2 right-4 transform -translate-y-1/2 text-white"
+              onClick={() => navigateImage("next")}
+            >
+              <ChevronRight className="h-8 w-8" />
+            </Button>
+            <div className="absolute bottom-4 left-4 text-white bg-black/50 px-2 py-1 rounded">
+              {currentImage.name} ({currentIndex + 1}/{searchResults.length})
+            </div>
           </div>
-          <Button
-            size="icon"
-            variant="ghost"
-            className="absolute top-1/2 left-4 transform -translate-y-1/2 text-white"
-            onClick={() => navigateImage("prev")}
-          >
-            <ChevronLeft className="h-8 w-8" />
-          </Button>
-          <Button
-            size="icon"
-            variant="ghost"
-            className="absolute top-1/2 right-4 transform -translate-y-1/2 text-white"
-            onClick={() => navigateImage("next")}
-          >
-            <ChevronRight className="h-8 w-8" />
-          </Button>
-          <div className="absolute bottom-4 left-4 text-white bg-black/50 px-2 py-1 rounded">
-            {currentImage.name} ({currentIndex + 1}/{searchResults.length})
-          </div>
-        </div>
+        </DialogDescription>
       </DialogContent>
     </Dialog>
   );

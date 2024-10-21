@@ -25,22 +25,57 @@ export function ImageUploader({
 
   const onDrop = useCallback(
     async (acceptedFiles: File[]) => {
+      if (processing) return; // Prevent new uploads while processing
+
       setProcessing(true);
       setProgress(0);
       setProgressStage("");
       try {
-        const processedImages = await processImages(
-          acceptedFiles,
-          (progress, stage) => {
-            setProgress(progress);
-            setProgressStage(stage);
-          }
+        // Check if already processed
+        const alreadyProcessed = uploadedImages.filter((img) =>
+          acceptedFiles.some((file) => file.name === img.name)
         );
 
-        setUploadedImages((prev) => [...prev, ...processedImages]);
+        if (alreadyProcessed.length > 0) {
+          toast({
+            title: "Already processed",
+            description: `${alreadyProcessed.length} file(s) already processed.`,
+          });
+          await new Promise((resolve) => setTimeout(resolve, 2000));
+        }
+
+        // Process the new files
+        const newFiles = acceptedFiles.filter(
+          (file) => !alreadyProcessed.some((img) => img.name === file.name)
+        );
+
+        if (newFiles.length > 0) {
+          const newProcessedImages = await processImages(
+            newFiles,
+            (progress, stage) => {
+              setProgress(progress);
+              setProgressStage(stage);
+              if (progress % 10 === 0 && progress !== 0 && progress !== 100) {
+                toast({
+                  title: "Image processed",
+                  description: `${progress}% (${
+                    Math.floor((progress / 100) * newFiles.length) + 1
+                  } out of ${newFiles.length} files processed)`,
+                });
+              }
+            }
+          );
+
+          setUploadedImages((prev) => [...prev, ...newProcessedImages]);
+          localStorage.setItem(
+            "uploadedImages",
+            JSON.stringify([...uploadedImages, ...newProcessedImages])
+          );
+        }
+
         toast({
           title: "Upload complete",
-          description: `${processedImages.length} new file(s) uploaded and processed successfully.`,
+          description: `${newFiles.length} new file(s) uploaded and processed successfully.`,
         });
       } catch (error) {
         console.error("Error processing images:", error);
@@ -55,32 +90,42 @@ export function ImageUploader({
         setProgressStage("Complete");
       }
     },
-    [setUploadedImages]
+    [uploadedImages, setUploadedImages, toast, processing]
   );
 
   const deleteImage = (id: string) => {
     setUploadedImages((prev) => prev.filter((img) => img.id !== id));
+    localStorage.setItem(
+      "uploadedImages",
+      JSON.stringify(uploadedImages.filter((img) => img.id !== id))
+    );
   };
 
   const deleteAllImages = () => {
     setUploadedImages([]);
+    localStorage.removeItem("uploadedImages");
   };
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    disabled: processing, // Disable dropzone while processing
+  });
 
   return (
     <Card className="h-fit lg:sticky lg:top-8">
       <CardContent className="p-6">
         <div
           {...getRootProps()}
-          className={`border-2 border-dashed rounded-lg p-4 text-center cursor-pointer transition-colors ${
+          className={`border-2 border-dashed rounded-lg p-4 text-center transition-colors ${
             isDragActive ? "border-primary bg-primary/10" : "border-gray-300"
-          }`}
+          } ${processing ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
         >
-          <input {...getInputProps()} />
+          <input {...getInputProps()} disabled={processing} />
           <Upload className="mx-auto h-12 w-12 text-gray-400" />
           <p className="mt-2 text-sm text-gray-600">
-            Drag & drop images here, or click to select files
+            {processing
+              ? "Processing images..."
+              : "Drag & drop images here, or click to select files"}
           </p>
         </div>
         {processing && (

@@ -5,6 +5,6 @@ export const searchImages = async (
   images: UploadedImage[]
 ): Promise<UploadedImage[]> => {
   // Simulate search delay
-  console.log(images);
+  //search for the query in the text of the image
   return images.filter((img) => img.text.includes(query.toLowerCase()));
 };
