@@ -103,7 +103,11 @@ export function ImageSearch({
             )}
           </Button>
         </div>
-        <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+        {/* search results count */}
+        <div className="text-sm text-gray-500 mt-2">
+          {searchResults.length} results found
+        </div>
+        <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-4">
           <AnimatePresence>
             {searchResults.map((image, index) => (
               <motion.div
@@ -119,7 +123,7 @@ export function ImageSearch({
                       <img
                         src={image.url}
                         alt={image.name}
-                        className="w-full h-32 object-cover rounded-lg cursor-pointer"
+                        className="w-full h-48 object-cover rounded-lg cursor-pointer"
                         onClick={() => handleImageClick(index)}
                       />
                     </TooltipTrigger>

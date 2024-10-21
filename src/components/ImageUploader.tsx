@@ -7,16 +7,7 @@ import { Progress } from "@/components/ui/progress";
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { UploadedImage } from "@/types/image";
-
-const processImages = async (files: File[]): Promise<UploadedImage[]> => {
-  // Simulate processing delay
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  return files.map((file) => ({
-    id: Math.random().toString(36).substr(2, 9),
-    name: file.name,
-    url: URL.createObjectURL(file),
-  }));
-};
+import { processImages } from "@/helperFunctions/ProcessImage";
 
 interface ImageUploaderProps {
   uploadedImages: UploadedImage[];
