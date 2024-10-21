@@ -7,11 +7,16 @@ import { ImagePreviewDialog } from "@/components/ImagePreviewDialog";
 import { UploadedImage } from "@/types/image";
 
 export default function ImageTextSearch() {
+  // Initialize state for uploaded images
   const [uploadedImages, setUploadedImages] = useState<UploadedImage[]>(() => {
+    // Check if we're in a browser environment
     if (typeof window !== "undefined") {
+      // Attempt to retrieve saved images from localStorage
       const saved = localStorage.getItem("uploadedImages");
+      // If saved images exist, parse and return them; otherwise, return an empty array
       return saved ? JSON.parse(saved) : [];
     }
+    // Return an empty array if not in a browser environment (e.g., during server-side rendering)
     return [];
   });
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(
