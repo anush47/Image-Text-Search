@@ -142,7 +142,7 @@ export function ImageUploader({
             >
               <div className="flex items-center">
                 <ImageIcon className="h-5 w-5 mr-2 text-gray-500" />
-                <span className="text-sm truncate max-w-[180px]">
+                <span className="text-sm truncate max-w-[150px]">
                   {image.name}
                 </span>
               </div>
