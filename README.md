@@ -38,7 +38,7 @@ Ensure you have Node.js and npm installed on your machine.
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/anush47/Image-Text-Search.git
+   git clone https://github.com/yourusername/Image-Text-Search.git
    ```
 
 2. **Navigate to the project directory**:
@@ -57,24 +57,6 @@ Ensure you have Node.js and npm installed on your machine.
    ```
 
 5. Open your browser and visit `http://localhost:5173` to see the app running locally.
-
----
-
-## 📦 Building for Production
-
-To create a production-ready build:
-
-```bash
-npm run build
-```
-
-The production files will be generated in the `dist` directory.
-
----
-
-## 📤 Deployment
-
-The project is set up for automatic deployment to **GitHub Pages** using GitHub Actions. Every time you push to the `main` branch, the app will be built and deployed via the `.github/workflows/deploy.yml` file.
 
 ---
 
