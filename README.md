@@ -1,3 +1,10 @@
+---
+
+# Image Text Search
+## 🎉 [Live Demo](https://anush47.github.io/Image-Text-Search/)
+
+---
+
 ## 🚀 Features
 
 - **Image Upload & Processing**: Easily upload images for text extraction.
