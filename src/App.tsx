@@ -8,7 +8,7 @@ function App() {
     <>
       <Router>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path={import.meta.env.BASE_URL} element={<Home />} />
         </Routes>
       </Router>
       <Toaster />
