@@ -87,13 +87,23 @@ export function ImagePreviewDialog({
               <X className="h-6 w-6" />
             </Button>
 
-            <img
-              ref={imageRef}
-              src={currentImage.file}
-              alt={currentImage.name}
-              className="max-w-[90vw] max-h-[90vh] w-auto h-auto object-contain transition-transform duration-200 ease-in-out"
-              style={{ transform: `scale(${zoomLevel})` }}
-            />
+            {currentImage.file ? (
+              <img
+                ref={imageRef}
+                src={currentImage.file}
+                alt={currentImage.name}
+                className="max-w-[90vw] max-h-[90vh] w-auto h-auto object-contain transition-transform duration-200 ease-in-out"
+                style={{ transform: `scale(${zoomLevel})` }}
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = "/path/to/fallback-image.jpg";
+                }}
+              />
+            ) : (
+              <div className="flex items-center justify-center w-[90vw] h-[90vh] bg-gray-200 text-gray-500">
+                Image not available
+              </div>
+            )}
             <div className="absolute bottom-4 right-4 flex space-x-2">
               <Button size="sm" onClick={() => handleZoom("out")}>
                 <ZoomOut className="h-4 w-4" />
